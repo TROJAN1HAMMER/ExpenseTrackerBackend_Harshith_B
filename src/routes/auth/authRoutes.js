@@ -3,6 +3,8 @@ const router = express.Router();
 const { registerUser, loginUser } = require("../../controllers/authController");
 const { body } = require("express-validator"); 
 const validateRequest = require("../../middleware/validationMiddleware");
+const auth = require("../../middleware/authMiddleware");
+const { admin } = require("../../firebase/firebaseAdmin");
 
 /**
  * @swagger
@@ -95,5 +97,31 @@ router.post("/login", [
   validateRequest,
   loginUser
 );
+
+/**
+ * @swagger
+ * /logout:
+ *   post:
+ *     summary: Logout the user (revoke Firebase refresh tokens)
+ *     tags:
+ *       - Auth
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Logout successful
+ *       401:
+ *         description: Unauthorized
+ */
+
+router.post("/logout", auth, async (req, res) => {
+  try {
+    await admin.auth().revokeRefreshTokens(req.user.uid);
+    res.status(200).json({ message: "Logout successful, token revoked" });
+  } catch (err) {
+    console.error("Logout error:", err);
+    res.status(500).json({ message: "Failed to logout", error: err.message });
+  }
+});
 
 module.exports = router;

@@ -11,10 +11,7 @@
       "request": {
         "method": "POST",
         "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
+          { "key": "Content-Type", "value": "application/json" }
         ],
         "body": {
           "mode": "raw",
@@ -47,6 +44,23 @@
           "host": ["localhost"],
           "port": "5001",
           "path": ["api", "login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Logout User",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{firebase_token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:5001/api/logout",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "logout"]
         }
       },
       "response": []
@@ -86,6 +100,23 @@
           "host": ["localhost"],
           "port": "5001",
           "path": ["api", "expenses"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Expense by ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{firebase_token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:5001/api/expenses/{{expense_id}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "expenses", "{{expense_id}}"]
         }
       },
       "response": []
@@ -172,13 +203,7 @@
     }
   ],
   "variable": [
-    {
-      "key": "firebase_token",
-      "value": ""
-    },
-    {
-      "key": "expense_id",
-      "value": ""
-    }
+    { "key": "firebase_token", "value": "" },
+    { "key": "expense_id", "value": "" }
   ]
 }
