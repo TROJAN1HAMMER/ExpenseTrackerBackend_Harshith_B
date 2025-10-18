@@ -11,13 +11,14 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
-app.use(errorHandler);
 
 // Mount routes
 app.use(routes);
 
 // Setup Swagger
 setupSwagger(app);
+
+app.use(errorHandler);
 
 // Default health route
 app.get("/", (req, res) => {

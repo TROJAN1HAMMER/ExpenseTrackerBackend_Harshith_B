@@ -1,163 +1,169 @@
-Expense Tracker Backend
-Project Overview
+# 💰 Expense Tracker API — Backend (KonnichiWow Intern Task)
 
-This is the backend API for an Expense Tracker application built with Node.js, Express.js, MongoDB, and Firebase Authentication.
-It allows users to register, login, manage expenses, and generate expense reports. All API endpoints are fully documented with Swagger and validated using express-validator.
+## 🚀 Overview
 
-Tech Stack
+A complete **Node.js + Express + MongoDB + Firebase** backend for an Expense Tracker application. Features include:
 
-Language: JavaScript (Node.js)
+* User authentication using Firebase
+* CRUD operations for expenses
+* Monthly and category-based reports
+* Swagger documentation (OpenAPI 3.0)
+* Express validation and middleware
+* Token-based authentication and logout
+* Filtering and sorting
+* Global error handling
 
-Framework: Express.js
+---
 
-Authentication: Firebase Authentication (Email/Password)
+## 🧩 Tech Stack
 
-Database: MongoDB (Mongoose)
+* **Language / Runtime:** JavaScript (Node.js)
+* **Framework:** Express.js
+* **Database:** MongoDB + Mongoose
+* **Authentication:** Firebase Authentication (Admin SDK)
+* **Validation:** express-validator
+* **Documentation:** Swagger (OpenAPI 3.0)
+* **Environment Variables:** dotenv
 
-Testing Tool: Postman
+---
 
-Features
+## 📂 File Structure
 
-User registration and login via Firebase
+```
+src/
+ ├── app.js
+ ├── server.js
+ ├── routes/
+ │   ├── auth/
+ │   │   └── authRoutes.js
+ │   ├── expenses/
+ │   │   └── expenseRoutes.js
+ │   ├── reports/
+ │   │   └── reportRoutes.js
+ │   └── index.js
+ ├── controllers/
+ │   ├── authController.js
+ │   ├── expenseController.js
+ │   └── reportController.js
+ ├── middleware/
+ │   ├── authMiddleware.js
+ │   ├── validationMiddleware.js
+ │   └── errorMiddleware.js
+ ├── models/
+ │   ├── Expense.js
+ │   └── User.js
+ ├── firebase/
+ │   └── firebaseAdmin.js
+ └── swagger.js
+```
 
-CRUD operations for expenses
+---
 
-Monthly and category-wise expense reports
+## 🔧 Setup Instructions
 
-Input validation using express-validator
+### 1. Clone the Repository
 
-Authentication middleware for protected routes
+```bash
+git clone https://github.com/TROJAN1HAMMER/ExpenseTrackerBackend_Harshith_B.git
+cd ExpenseTrackerBackend
+```
 
-Swagger-based API documentation
+### 2. Install Dependencies
 
-Custom global error-handling middleware
-
-Modular and clean folder structure
-
-Folder Structure
-ExpenseTrackerBackend/
-│
-├─ src/
-│  ├─ controllers/
-│  │   ├─ authController.js
-│  │   ├─ expenseController.js
-│  │   └─ reportController.js
-│  ├─ routes/
-│  │   ├─ auth/
-│  │   │   └─ authRoutes.js
-│  │   ├─ expenses/
-│  │   │   └─ expenseRoutes.js
-│  │   ├─ reports/
-│  │   │   └─ reportRoutes.js
-│  │   └─ index.js
-│  ├─ middleware/
-│  │   ├─ authMiddleware.js
-│  │   ├─ errorMiddleware.js
-│  │   └─ validationMiddleware.js
-│  ├─ models/       # Mongoose models
-│  ├─ firebase/     # Firebase config
-│  ├─ swagger.js
-│  └─ app.js
-├─ package.json
-├─ .env
-├─ README.md
-└─ postman_collection.json
-
-Setup Instructions
-1. Clone the Repository
-git clone https://github.com/<YourUsername>/ExpenseTrackerBackend_Harshith_B.git
-cd ExpenseTrackerBackend_Harshith_B
-
-2. Install Dependencies
+```bash
 npm install
+```
 
-3. Create .env File
+### 3. Add Environment Variables
 
-Create a .env file in the root directory with the following:
+Create a `.env` file in the root with required variables (MongoDB URI, Firebase credentials, etc.)
 
-MONGO_URI=<your_mongodb_connection_string>
-FIREBASE_API_KEY=<your_firebase_api_key>
-FIREBASE_AUTH_DOMAIN=<your_firebase_auth_domain>
-FIREBASE_PROJECT_ID=<your_firebase_project_id>
-FIREBASE_STORAGE_BUCKET=<your_firebase_storage_bucket>
-FIREBASE_MESSAGING_SENDER_ID=<your_sender_id>
-FIREBASE_APP_ID=<your_app_id>
+### 4. Add Firebase Credentials
 
-Running the Server
-Development
+* Download the Firebase service account JSON from Firebase Console → Project Settings → Service Accounts → Generate New Private Key
+* Save it as `src/firebase/serviceAccountKey.json`
+
+### 5. Run the Server
+
+```bash
 npm run dev
+```
 
+Server runs at: `http://localhost:5001`
 
-This uses nodemon for hot-reloading.
+---
 
-Production
-npm start
+## 🧠 API Endpoints
 
+### 🔐 Auth Routes
 
-The server will run on http://localhost:5000/ by default.
+| Method | Endpoint      | Description                           |
+| ------ | ------------- | ------------------------------------- |
+| POST   | /api/register | Register a new user                   |
+| POST   | /api/login    | Log in user, return Firebase token    |
+| POST   | /api/logout   | Revoke user’s Firebase token (logout) |
 
-API Routes
-Auth
-Endpoint	Method	Auth	Description
-/auth/register	POST	No	Register a new user
-/auth/login	POST	No	Login user and return Firebase token
-Expenses
-Endpoint	Method	Auth	Description
-/expenses	GET	Yes	Fetch all expenses
-/expenses	POST	Yes	Add a new expense
-/expenses/:id	PUT	Yes	Update an expense
-/expenses/:id	DELETE	Yes	Delete an expense
-Reports
-Endpoint	Method	Auth	Description
-/reports/monthly	GET	Yes	Get monthly expense summary
-/reports/category	GET	Yes	Get expenses by category
-Swagger Documentation
+### 💸 Expense Routes
 
-Once the server is running, visit:
+| Method | Endpoint          | Description                        |
+| ------ | ----------------- | ---------------------------------- |
+| GET    | /api/expenses     | Fetch all expenses (filter & sort) |
+| GET    | /api/expenses/:id | Fetch a single expense by ID       |
+| POST   | /api/expenses     | Add a new expense                  |
+| PUT    | /api/expenses/:id | Update an existing expense         |
+| DELETE | /api/expenses/:id | Delete an expense                  |
 
-http://localhost:5000/api-docs
+**Query Parameters for GET /api/expenses:**
 
+| Parameter | Type   | Description                   | Example                              |
+| --------- | ------ | ----------------------------- | ------------------------------------ |
+| category  | string | Filter by category            | `/api/expenses?category=Food`        |
+| minAmount | number | Minimum expense amount        | `/api/expenses?minAmount=100`        |
+| maxAmount | number | Maximum expense amount        | `/api/expenses?maxAmount=500`        |
+| startDate | date   | Start date (YYYY-MM-DD)       | `/api/expenses?startDate=2025-10-01` |
+| endDate   | date   | End date (YYYY-MM-DD)         | `/api/expenses?endDate=2025-10-31`   |
+| sort      | string | Sort by a field (amount/date) | `/api/expenses?sort=amount`          |
+| order     | string | Sort order (asc/desc)         | `/api/expenses?sort=date&order=desc` |
 
-You will find interactive API documentation with request/response examples, authentication info, and validation hints.
+### 📊 Report Routes
 
-Error Handling
+| Method | Endpoint              | Description                     | Query Params         |
+| ------ | --------------------- | ------------------------------- | -------------------- |
+| GET    | /api/reports/monthly  | Get monthly aggregated report   | `month=MM&year=YYYY` |
+| GET    | /api/reports/category | Get report filtered by category | `category=Food`      |
 
-All errors are returned in a structured JSON format:
+---
 
-{
-  "status": "error",
-  "message": "Error description"
-}
+## 🧪 Postman Collection
 
+* File: `Expense Tracker API.postman_collection.json`
+* Preconfigured requests for all endpoints: `/register`, `/login`, `/expenses`, `/logout`, `/reports`
 
-Validation errors:
+---
 
-{
-  "status": "error",
-  "errors": [
-    { "field": "email", "message": "Must be a valid email" },
-    { "field": "password", "message": "Password must be at least 6 characters" }
-  ]
-}
+## 🔗 URLs
 
-Postman Collection
+* **Swagger Documentation:** `http://localhost:5001/api-docs`
+* **API Base URL:** `http://localhost:5001/api`
 
-A Postman collection is included (postman_collection.json) to test all endpoints. Import it into Postman and test both success and failure cases.
+---
 
-Optional Enhancements / Brownie Points
+## 🏁 Conclusion
 
-Input validation via express-validator
+You now have a fully functional, production-ready **Expense Tracker Backend** with:
 
-Authentication middleware for route protection
+* Firebase authentication
+* CRUD for expenses
+* Reports
+* Swagger documentation
+* Filtering, sorting, and error handling
 
-Global error-handling middleware
+**Bonus Features (Brownie Points):**
 
-Modular folder structure and meaningful variable names
+* Middleware for auth validation
+* Input validation with express-validator
+* Clean modular structure
+* Meaningful variable names & comments
+* Aggregation-based monthly reports
 
-Aggregation-based monthly reports
-
-Optional filtering/sorting routes can be added for /expenses
-
-License
-
-This project is for educational purposes. Modify and use freely.
+---

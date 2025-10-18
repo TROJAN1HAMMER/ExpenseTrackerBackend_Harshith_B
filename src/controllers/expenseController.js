@@ -1,14 +1,40 @@
 const Expense = require("../models/Expense");
 
 // Get all expenses for logged-in user
-exports.getExpenses = async (req, res) => {
+// Get all expenses for logged-in user (with optional filtering/sorting)
+exports.getExpenses = async (req, res, next) => {
   try {
-    const expenses = await Expense.find({ userUid: req.user.uid });
-    res.json(expenses);
+    const { category, minAmount, maxAmount, sort, order, startDate, endDate } = req.query;
+    const query = { userUid: req.user.uid };
+
+    // 🔹 Optional filters
+    if (category) query.category = category;
+    if (minAmount || maxAmount) {
+      query.amount = {};
+      if (minAmount) query.amount.$gte = Number(minAmount);
+      if (maxAmount) query.amount.$lte = Number(maxAmount);
+    }
+    if (startDate || endDate) {
+      query.date = {};
+      if (startDate) query.date.$gte = new Date(startDate);
+      if (endDate) query.date.$lte = new Date(endDate);
+    }
+
+    // 🔹 Sorting (default: newest first)
+    const sortOrder = order === "asc" ? 1 : -1;
+    const sortField = sort || "date";
+
+    const expenses = await Expense.find(query).sort({ [sortField]: sortOrder });
+    res.status(200).json({
+      success: true,
+      count: expenses.length,
+      data: expenses,
+    });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+     res.json({err}); // pass to global error handler
   }
 };
+
 
 // Get a specific expense by ID
 exports.getExpenseById = async (req, res) => {
