@@ -1,16 +1,16 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const morgan = require('morgan');
-const cors = require('cors');
+// src/server.js
+const mongoose = require("mongoose");
+const app = require("./app");
 
-const app = express();
-app.use(express.json());
-app.use(morgan('dev'));
-app.use(cors());
+const PORT = process.env.PORT || 5001;
+const MONGO_URI = process.env.MONGO_URI;
 
-// health
-app.get('/', (req,res)=> res.json({ok:true}));
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, ()=> console.log(`Server running on ${PORT}`));
+// Connect to MongoDB
+mongoose.connect(MONGO_URI)
+  .then(() => {
+    console.log("MongoDB connected ✅");
+    app.listen(PORT, () => console.log(`Server running on port ${PORT} 🚀`));
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error ❌", err.message);
+  });
