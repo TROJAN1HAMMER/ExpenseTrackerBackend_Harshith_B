@@ -30,31 +30,37 @@ A complete **Node.js + Express + MongoDB + Firebase** backend for an Expense Tra
 ## 📂 File Structure
 
 ```
-src/
- ├── app.js
- ├── server.js
- ├── routes/
- │   ├── auth/
- │   │   └── authRoutes.js
- │   ├── expenses/
- │   │   └── expenseRoutes.js
- │   ├── reports/
- │   │   └── reportRoutes.js
- │   └── index.js
- ├── controllers/
- │   ├── authController.js
- │   ├── expenseController.js
- │   └── reportController.js
- ├── middleware/
- │   ├── authMiddleware.js
- │   ├── validationMiddleware.js
- │   └── errorMiddleware.js
- ├── models/
- │   ├── Expense.js
- │   └── User.js
- ├── firebase/
- │   └── firebaseAdmin.js
- └── swagger.js
+├ src/
+├── ├── app.js
+├── ├── server.js
+├── ├── routes/
+├── │   ├── auth/
+├── │   │   └── authRoutes.js
+├── │   ├── expenses/
+├── │   │   └── expenseRoutes.js
+├── │   ├── reports/
+├── │   │   └── reportRoutes.js
+├── │   └── index.js
+├── ├── controllers/
+├── │   ├── authController.js
+├── │   ├── expenseController.js
+├── │   └── reportController.js
+├── ├── middleware/
+├── │   ├── authMiddleware.js
+├── │   ├── validationMiddleware.js
+├── │   └── errorMiddleware.js
+├── ├── models/
+├── │   ├── Expense.js
+├── │   └── User.js
+├── ├── firebase/
+├── │   └── firebaseAdmin.js
+├── |   └── serviceAccountKey.json
+├── └── swagger.js
+├── package.json
+├── package-lock.json
+├── postman_collection.json
+├─ README.md
+├─ .env
 ```
 
 ---
@@ -150,7 +156,7 @@ Server runs at: `http://localhost:5001`
 
 ## 🏁 Conclusion
 
-You now have a fully functional, production-ready **Expense Tracker Backend** with:
+This is a fully functional, production-ready **Expense Tracker Backend** with:
 
 * Firebase authentication
 * CRUD for expenses
